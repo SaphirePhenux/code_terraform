@@ -36,7 +36,7 @@ resource "aws_instance" "web1" {
   instance_type = "t2.medium"
 
   # Specifying the AMI
-  ami = "ami-a2a2a2a2}"
+  ami = "ami-a2a2a2a2"
 
   # The name of the SSH keypair
   key_name = "${aws_key_pair.auth.id}"
@@ -55,7 +55,7 @@ resource "aws_instance" "web1" {
       "sudo service nginx start",
     ]
   }
-
+}
   resource "aws_instance" "web2" {
     # The default username for AMI
     connection {
@@ -84,19 +84,70 @@ resource "aws_instance" "web1" {
         "sudo service nginx start",
       ]
     }
+}
 
 
+resource "aws_db_instance" "default" {
+  depends_on             = ["aws_security_group.cross_subnet_comms"]
+  identifier             = "web-mysql"
+  allocated_storage      = "500 GB"
+  engine                 = "mysql"
+  engine_version         = "5.7.21"
+  instance_class         = "db.t2.micro"
+  name                   = "web_db"
+  username               = "web_user"
+  password               = "qw3rty"
+  vpc_security_group_ids = ["${aws_security_group.cross_subnet_comms.id}"]
+  db_subnet_group_name   = "${aws_db_subnet_group.default.id}"
+}
 
-    resource "aws_db_instance" "default" {
-      depends_on             = ["aws_security_group.cross_subnet_comms"]
-      identifier             = "web-mysql"
-      allocated_storage      = "500 GB"
-      engine                 = "mysql"
-      engine_version         = "5.7.21"
-      instance_class         = "db.t2.micro"
-      name                   = "web_db"
-      username               = "web_user"
-      password               = "qw3rty"
-      vpc_security_group_ids = ["${aws_security_group.cross_subnet_comms.id}"]
-      db_subnet_group_name   = "${aws_db_subnet_group.default.id}"
-    }
+resource "aws_db_subnet_group" "default" {
+  name        = "main_db_subnet_group"
+  description = "The db subnet"
+  subnet_ids = ["${aws_subnet.private_subnet.id}"]
+}
+
+
+resource "aws_instance" "Active_Directory" {
+  # The default username for the AMI
+  connection {
+    user = "AD-Admin"
+  }
+
+  instance_type = "t2.medium"
+
+  # Specifying the AMI
+  ami = "ami-c3c3c3c3"
+
+  # The name of the SSH keypair
+  key_name = "${aws_key_pair.auth.id}"
+
+  # The Security group to allow HTTP and SSH access
+  vpc_security_group_ids = ["${aws_security_group.private_vpn_access.id}"]
+
+  # subnet ID
+  subnet_id = "${aws_subnet.private_subnet.id}"
+
+}
+
+resource "aws_instance" "vpn" {
+  # The default username for AMI
+  connection {
+    user = "ubuntu"
+  }
+
+  instance_type = "t2.medium"
+
+  # Specifying the AMI
+  ami = "ami-d4d4d4d4"
+
+  # The name of the SSH keypair
+  key_name = "${aws_key_pair.auth.id}"
+
+  # The Security group to allow HTTP and SSH access
+  vpc_security_group_ids = ["${aws_security_group.vpn_port_access.id}"]
+
+  # subnet ID
+  subnet_id = "${aws_subnet.vpn_connection.id}"
+
+}

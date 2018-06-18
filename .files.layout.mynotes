@@ -24,7 +24,14 @@ security group
  -- SSH from 0.0 to Private, and from
  -- SSH to private to DMZ
 
-ITems left:
+Items left:
 
 LDAP Server
 VPN Server
+
+
+resource "aws_security_group" "elb" {
+resource "aws_security_group" "cross_subnet_comms" {
+resource "aws_security_group" "vpn_port_access" {
+resource "aws_security_group" "private_vpn_access" {
+resource "aws_security_group" "vpn_ssh_access" {
