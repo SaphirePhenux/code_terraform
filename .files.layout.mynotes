@@ -1,0 +1,30 @@
+main.tf
+
+variables.tf
+
+names
+ - database
+ - web 1
+ - web 2
+ - LDAP
+ - Manager
+ - Finance
+ - HR
+
+Resources
+ - 3 * EC2
+ - 1 * RDS
+ - 3 * WS
+
+
+security group
+ - public DMZ (0.0 to DMZ)
+ - private servers
+ -- Private to DMZ (DB)
+ -- SSH from 0.0 to Private, and from
+ -- SSH to private to DMZ
+
+ITems left:
+
+LDAP Server
+VPN Server

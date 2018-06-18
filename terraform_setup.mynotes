@@ -1,0 +1,32 @@
+Terraform Code Test Setup
+
+VCP : 10.99.0.0 / 16
+DC = "DataCenter"
+DC 1 : Subnet 1 : 10.99.1.0 / 24
+ - Web Servers * 2 (load balanced)
+ -
+DC 2 : Subnet 2 : 10.99.2.0 / 24
+ - Database / Radius??
+ - LDAP
+DC 3 : Subnet 3 : 10.99.3.0 / 24
+ - POS VDI ? * 2
+ - Manager VDI ?
+ - HR Workstation
+ - Finance Workstation
+ - Check-in Workstation ?
+
+DC 4 : Subnet 4 : 10.99.4.0 / 24
+ - Kali 1
+ - Kali 2
+ - Windows 1
+ - Windows 2
+
+---------------------------
+
+EC2 - vServer
+RDS - vDatabase
+ELB - balanced
+VPC - Isolated Cloud
+DC - AWS Direct Connect
+
+# Subnet for SSH access via VPN
